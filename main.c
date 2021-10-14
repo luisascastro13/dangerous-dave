@@ -1,25 +1,25 @@
 //Arthur Sauer e Luísa Castro
 //Algoritmos e Programação - INF01202 Turma A/B
 #include <stdio.h>
-#include <stdlib.h>
 #include <conio.h>
 #include <conio2.h>
 
 //prototipos das funcoes utilizadas
 void desenha_mapa(char mapa[]);
-
+void movimenta();
 
 int main(void)
 {
+    int a=0;
     //chama a funcao desenha_mapa com o mapa que vai ser utilizado.
     //mapa é uma string que identifica o nome do arquivo txt.
     char mapa[] = "mapa1.txt";
     desenha_mapa(mapa);
+    movimenta();
 
     getch();
     return(0);
 }
-
 
 //funcao desenha_mapa
 //dada uma string mapa com o nome do arquivo txt
@@ -103,4 +103,32 @@ void desenha_mapa(char mapa[]){
   fclose(pont_arq);
 }
 
-
+//funcao movimenta
+//verifica quais teclas estao sendo pressionadas.
+//para a execuçao do while quando for apertado o ESC
+//Luísa
+void movimenta(){
+    int ch;
+    while ((ch = _getch()) != 27) /* 27 = ESC */
+    {
+        if (ch == 0 || ch == 224){
+            switch(_getch ())
+            {
+                case 75:
+                    printf("\nEsquerda");
+                    break;
+                case 77:
+                    printf("\nDireita");
+                    break;
+                case 72:
+                    printf("\nCima");
+                    break;
+            }
+        }
+        else if(ch == 32){
+                printf("\nBarraEspaco");
+            }
+        printf("%d\n", ch );
+    }
+    printf("ESC %d\n", ch);
+}
