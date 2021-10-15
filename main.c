@@ -11,11 +11,15 @@ void movimenta();
 int main(void)
 {
     int a=0;
+    char matriz_mapa[15][96];
     //chama a funcao desenha_mapa com o mapa que vai ser utilizado.
     //mapa é uma string que identifica o nome do arquivo txt.
-    char mapa[] = "mapa1.txt";
-    desenha_mapa(mapa);
-    movimenta();
+    char mapa[] = "mapa2.txt";
+    //desenha_mapa(mapa);
+    //movimenta();
+
+    salva_matriz(mapa);
+
 
     getch();
     return(0);
@@ -27,14 +31,14 @@ int main(void)
 //Luísa
 void desenha_mapa(char mapa[]){
     FILE *pont_arq;
-    char texto_str[3600];
+    char matriz_mapa[15][96];
     char c;
+    int linha, coluna;
 
     //abrindo o arquivo_frase em modo "somente leitura"
     pont_arq = fopen(mapa, "r");
 
     do{
-
         //faz a leitura do caracter no arquivo apontado por pont_arq
         c = fgetc(pont_arq);
 
@@ -94,10 +98,50 @@ void desenha_mapa(char mapa[]){
         }
         //exibe o caracter lido na tela
         printf("%c" , c);
+        for(linha=0; linha < 15; linha++){
+            for(coluna=0; coluna < 96; coluna ++){
+                matriz_mapa[linha][coluna] = c;
+            }
+        }
 
     //faz isso até o final do arquivo
     }while (c != EOF);
 
+  //fechando o arquivo
+  fclose(pont_arq);
+}
+
+//salva matriz
+//pega o txt e salva uma matriz com os caracteres;
+void salva_matriz(char mapa[]){
+    FILE *pont_arq;
+    char matriz_mapa[15][96];
+    char c;
+    int linha, coluna;
+
+    //abrindo o arquivo_frase em modo "somente leitura"
+    pont_arq = fopen(mapa, "r");
+
+    do{
+        //faz a leitura do caracter no arquivo apontado por pont_arq
+        c = fgetc(pont_arq);
+
+        //exibe o caracter lido na tela
+        printf("%c" , c);
+        for(linha=0; linha < 15; linha++){
+            for(coluna=0; coluna < 96; coluna ++){
+                matriz_mapa[linha][coluna] = c;
+            }
+        }
+
+    //faz isso até o final do arquivo
+    }while (c != EOF);
+
+    for(linha=0; linha < 15; linha++){
+            for(coluna=0; coluna < 96; coluna ++){
+                printf("%c", matriz_mapa[linha][coluna]);
+            }
+        }
 
   //fechando o arquivo
   fclose(pont_arq);
