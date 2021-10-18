@@ -1,48 +1,107 @@
-//Arthur Sauer e Luísa Castro
-//Algoritmos e Programação - INF01202 Turma A/B
+/*
+    UNIVERSIDADE FEDERAL DO RIO GRANDE DO SUL
+    INF01202 - ALGORITMOS E PROGRAMAÇÃO
+
+    TRABALHO FINAL
+
+    ALUNOS: ARTHUR LOPES SAUER E LUÍSA SCHMITZ DE CASTRO
+    MATRÍCULAS: XXX E 333766
+
+    jogo de plataforma inspirado no clássico Dangerous Dave.
+    O objetivo do jogo é mover-se através de plataformas dispostas pelo mundo,
+    coletando bens e um troféu. Após coletar o troféu, o jogador poderá mover-se até a porta,
+    que o levará para a próxima fase do jogo.
+*/
+
 #include <stdio.h>
 #include <conio.h>
 #include <conio2.h>
+
+//definicao de constantes
+//tamanho máximo da matriz que vai guardar o mapa
+#define LINHAS 17
+#define COLUNAS 100
 
 //prototipos das funcoes utilizadas
 void desenha_mapa(char mapa[]);
 void movimenta();
 
+//definir prototipo da funcao exibe_menu();
+
 int main(void)
 {
-    int a=0;
-    char matriz_mapa[15][96];
-    //chama a funcao desenha_mapa com o mapa que vai ser utilizado.
-    //mapa é uma string que identifica o nome do arquivo txt.
-    char mapa[] = "mapa2.txt";
-    //desenha_mapa(mapa);
-    //movimenta();
+    //matriz do mapa
+    int M[LINHAS][COLUNAS];
+    //contadores uteis para percorrer a matriz do mapa
+    int i,j,n;
+    //texto que contem o arquivo que vai ser guardado na matriz
+    char arq[] = "mapa1.txt";
 
-    salva_matriz(mapa);
+    //PRIMEIRA COISA QUE ACONTECE NO PROGRAMA É EXIBIR O MENU
+    //exibe_menu();
+
+    //printf("Lendo o arquivo...\n");
+    le (M, arq);
+    printf("\n\nAqui esta o seu arquivo: \n");
+    imprime (M);
+
+    movimenta();
 
 
     getch();
     return(0);
 }
 
-//funcao desenha_mapa
-//dada uma string mapa com o nome do arquivo txt
-// desenha o mapa na tela, de acordo com cada caractere (e sua respectiva cor)
+//funcao le
+//dada uma matriz de ponteiros e
+//dada uma string com o nome do arquivo txt
+//salva o arquivo na matriz
 //Luísa
-void desenha_mapa(char mapa[]){
-    FILE *pont_arq;
-    char matriz_mapa[15][96];
+void le (int mat[][COLUNAS], char arq[]) {
+    FILE *fp;
+    int i, j, n=0;
     char c;
-    int linha, coluna;
 
-    //abrindo o arquivo_frase em modo "somente leitura"
-    pont_arq = fopen(mapa, "r");
+    //abre o arquivo
+    fp = fopen(arq,"r");
 
-    do{
-        //faz a leitura do caracter no arquivo apontado por pont_arq
-        c = fgetc(pont_arq);
+    //se arquivo estiver vazio, deu erro, finaliza execução
+    if(fp == NULL) {
+        perror("Erro na leitura do arquivo.");
+        return(-1);
+    }
 
-        //verifica qual tipo de caractere é, para mudar a cor do fundo naquele caractere.
+    //le o txt e salva em uma matriz de ponteiros
+    for (i = 0; i < LINHAS; i++){
+        for (j = 0; j < COLUNAS; j++) {
+            c = fgetc(fp);
+            *(mat[0] + i * COLUNAS + j) = c;
+            //printf("%c", c);
+        }
+    }
+    //fecha o arquivo.
+    fclose(fp);
+}
+
+//funcao imprime()
+//recebe como parametro a matriz
+//imprime na tela a matriz que contem o conteudo do arquivo txt
+//Luísa
+void imprime (int mat[][COLUNAS]) {
+    int i, j;
+    for (i = 0; i < LINHAS; i++){
+        for (j = 0; j < COLUNAS; j++) {
+            define_cores(mat[i][j]);
+            printf("%c", mat[i][j]);
+        }
+    }
+}
+
+//funcao define_cores(char caractere);
+//dado um caractere, pinta o fundo da tela de acordo com o mesmo
+//Luísa
+void define_cores(char c){
+//verifica qual tipo de caractere é, para mudar a cor do fundo naquele caractere.
         switch(c){
             //parede
             case 'x':
@@ -96,56 +155,8 @@ void desenha_mapa(char mapa[]){
                 textcolor(WHITE);
                 break;
         }
-        //exibe o caracter lido na tela
-        printf("%c" , c);
-        for(linha=0; linha < 15; linha++){
-            for(coluna=0; coluna < 96; coluna ++){
-                matriz_mapa[linha][coluna] = c;
-            }
-        }
-
-    //faz isso até o final do arquivo
-    }while (c != EOF);
-
-  //fechando o arquivo
-  fclose(pont_arq);
 }
 
-//salva matriz
-//pega o txt e salva uma matriz com os caracteres;
-void salva_matriz(char mapa[]){
-    FILE *pont_arq;
-    char matriz_mapa[15][96];
-    char c;
-    int linha, coluna;
-
-    //abrindo o arquivo_frase em modo "somente leitura"
-    pont_arq = fopen(mapa, "r");
-
-    do{
-        //faz a leitura do caracter no arquivo apontado por pont_arq
-        c = fgetc(pont_arq);
-
-        //exibe o caracter lido na tela
-        printf("%c" , c);
-        for(linha=0; linha < 15; linha++){
-            for(coluna=0; coluna < 96; coluna ++){
-                matriz_mapa[linha][coluna] = c;
-            }
-        }
-
-    //faz isso até o final do arquivo
-    }while (c != EOF);
-
-    for(linha=0; linha < 15; linha++){
-            for(coluna=0; coluna < 96; coluna ++){
-                printf("%c", matriz_mapa[linha][coluna]);
-            }
-        }
-
-  //fechando o arquivo
-  fclose(pont_arq);
-}
 
 //funcao movimenta
 //verifica quais teclas estao sendo pressionadas.
@@ -153,7 +164,7 @@ void salva_matriz(char mapa[]){
 //Luísa
 void movimenta(){
     int ch;
-    while ((ch = _getch()) != 27) /* 27 = ESC */
+    while ((ch = _getch()) != 27)
     {
         if (ch == 0 || ch == 224){
             switch(_getch ())
@@ -176,3 +187,6 @@ void movimenta(){
     }
     printf("ESC %d\n", ch);
 }
+
+//funcao exibe_menu();
+//Arthur

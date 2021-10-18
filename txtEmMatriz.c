@@ -6,8 +6,11 @@
 #define COLUNAS 100
 
 int main () {
+    //matriz do mapa
     int M[LINHAS][COLUNAS];
-    int i, j,n;
+    //contadores uteis para percorrer a matriz do mapa
+    int i,j,n;
+    //texto que contem o arquivo que vai ser guardado na matriz
     char arq[] = "mapa1.txt";
 
     //printf("Lendo o arquivo...\n");
@@ -16,6 +19,7 @@ int main () {
     imprime (M);
     return(0);
 }
+
 
 void le (int mat[][COLUNAS], char arq[]) {
     FILE *fp;
