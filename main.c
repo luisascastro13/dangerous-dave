@@ -7,7 +7,7 @@
     ALUNOS: ARTHUR LOPES SAUER E LUÍSA SCHMITZ DE CASTRO
     MATRÍCULAS: XXX E 333766
 
-    jogo de plataforma inspirado no clássico Dangerous Dave.
+    Jogo de plataforma inspirado no clássico Dangerous Dave.
     O objetivo do jogo é mover-se através de plataformas dispostas pelo mundo,
     coletando bens e um troféu. Após coletar o troféu, o jogador poderá mover-se até a porta,
     que o levará para a próxima fase do jogo.
@@ -24,7 +24,12 @@
 
 //prototipos das funcoes utilizadas
 void desenha_mapa(char mapa[]);
-void movimenta();
+void verifica_tecla();
+void le(int mat[][COLUNAS], char arq[]);
+void imprime (int mat[][COLUNAS]);
+void desenha_barrainfo(int mat[][COLUNAS]);
+void define_cores(char c);
+void verifica_tecla();
 
 //definir prototipo da funcao exibe_menu();
 
@@ -32,27 +37,52 @@ int main(void)
 {
     //matriz do mapa
     int M[LINHAS][COLUNAS];
-    //contadores uteis para percorrer a matriz do mapa
+    //matriz da barra de informações
+    int B[2][100];
+
+    //contadores uteis para percorrer as matrizes
     int i,j,n;
-    //texto que contem o arquivo que vai ser guardado na matriz
-    char arq[] = "mapa1.txt";
+
+    //texto que contem o arquivo mapa txt que vai ser guardado na matriz
+    char mapa[] = "mapa1.txt";
+    char info[] = "info.txt";
 
     //PRIMEIRA COISA QUE ACONTECE NO PROGRAMA É EXIBIR O MENU
     //exibe_menu();
+    //vai ser algo do tipo
+    //faz um switch com as opcoes do menu
+    //enquanto ele nao escrever nenhuma opcao valida, continua mostrando o menu...
+    //1 - Novo Jogo
+    //2 - Carregar um jogo salvo
+    //3 - Ranking de Melhores Pontuações
+    //4 - Sair
 
-    //printf("Lendo o arquivo...\n");
-    le (M, arq);
-    printf("\n\nAqui esta o seu arquivo: \n");
+    //printf("Lendo a barra de informações...\n");
+    le (B, info);
+    //printf("\n\nAqui esta a barra de informacoes: \n");
+    //imprime (B);
+    desenha_barrainfo(B);
+
+    //printf("Lendo o mapa...\n");
+    le (M, mapa);
+    //printf("\n\nAqui esta o seu arquivo: \n");
+    printf("\n");
     imprime (M);
 
-    movimenta();
+    verifica_tecla();
 
+    /*int ch;
+    while ((ch = _getch()) != 27)
+    {
+        printf("%c\n", verifica_tecla(ch));
+    }
+    */
 
     getch();
     return(0);
 }
 
-//funcao le
+//funcao le(matriz, arquivo)
 //dada uma matriz de ponteiros e
 //dada uma string com o nome do arquivo txt
 //salva o arquivo na matriz
@@ -83,7 +113,7 @@ void le (int mat[][COLUNAS], char arq[]) {
     fclose(fp);
 }
 
-//funcao imprime()
+//funcao imprime(matriz)
 //recebe como parametro a matriz
 //imprime na tela a matriz que contem o conteudo do arquivo txt
 //Luísa
@@ -97,7 +127,26 @@ void imprime (int mat[][COLUNAS]) {
     }
 }
 
-//funcao define_cores(char caractere);
+//funcao desenha_barrainfo(matriz)
+//recebe a matriz que contem os dados da barra de informacoes
+//imprime os dados com formatacao
+//Luísa
+void desenha_barrainfo(int mat[][COLUNAS]){
+    int i,j;
+    for (i = 0; i < 1; i++){
+        for (j = 0; j < 100; j++) {
+            //ao inves de quebrar a linha com \n, da um espaçamento entre as linhas de tamanho \t
+            if(mat[i][j] == '\n'){
+                printf("\t");
+            }
+            else{
+                printf("%c", mat[i][j]);
+            }
+        }
+    }
+}
+
+//funcao define_cores(caractere);
 //dado um caractere, pinta o fundo da tela de acordo com o mesmo
 //Luísa
 void define_cores(char c){
@@ -106,6 +155,7 @@ void define_cores(char c){
             //parede
             case 'x':
                 textbackground(RED);
+                textcolor(RED);
                 c = '_';
                 break;
             //agua
@@ -121,10 +171,12 @@ void define_cores(char c){
             //dave
             case 'D':
                 textbackground(WHITE);
+                textcolor(BLACK);
                 break;
             //trofeu
             case 'T':
                 textbackground(YELLOW);
+                textcolor(BLACK);
                 break;
             //entrada
             case 'O':
@@ -157,35 +209,40 @@ void define_cores(char c){
         }
 }
 
-
-//funcao movimenta
-//verifica quais teclas estao sendo pressionadas.
+//funcao verifica_tecla()
+//verifica quais teclas estao sendo pressionadas e printa o nome da tecla clicada.
 //para a execuçao do while quando for apertado o ESC
 //Luísa
-void movimenta(){
+void verifica_tecla(){
     int ch;
+    //enquanto o usuario nao apertar ESC, continua...
     while ((ch = _getch()) != 27)
     {
+        //se apertar as setas
         if (ch == 0 || ch == 224){
+            //verifica qual seta é
             switch(_getch ())
             {
                 case 75:
                     printf("\nEsquerda");
                     break;
                 case 77:
-                    printf("\nDireita");
+                     printf("\nDireita");
                     break;
                 case 72:
-                    printf("\nCima");
+                     printf("\nCima");
                     break;
             }
         }
+        //verifica se é a barra de espaço
         else if(ch == 32){
-                printf("\nBarraEspaco");
+               printf("\nBarraEspaco");
             }
-        printf("%d\n", ch );
+        //informa o número da tecla clicada
+        //printf("%d\n", ch );
     }
-    printf("ESC %d\n", ch);
+    //mostra que o usuário apertou o ESC
+    printf("\nESC. Saindo... \n", ch);
 }
 
 //funcao exibe_menu();
