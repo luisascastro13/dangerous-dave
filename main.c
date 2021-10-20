@@ -1,16 +1,16 @@
 /*
     UNIVERSIDADE FEDERAL DO RIO GRANDE DO SUL
-    INF01202 - ALGORITMOS E PROGRAMA«√O
+    INF01202 - ALGORITMOS E PROGRAMA√á√ÉO
 
     TRABALHO FINAL
 
-    ALUNOS: ARTHUR LOPES SAUER E LUÕSA SCHMITZ DE CASTRO
-    MATRÕCULAS: XXX E 333766
+    ALUNOS: ARTHUR LOPES SAUER E LU√çSA SCHMITZ DE CASTRO
+    MATR√çCULAS: 00333033 E 333766
 
-    Jogo de plataforma inspirado no cl·ssico Dangerous Dave.
-    O objetivo do jogo È mover-se atravÈs de plataformas dispostas pelo mundo,
-    coletando bens e um trofÈu. ApÛs coletar o trofÈu, o jogador poder· mover-se atÈ a porta,
-    que o levar· para a prÛxima fase do jogo.
+    Jogo de plataforma inspirado no cl√°ssico Dangerous Dave.
+    O objetivo do jogo √© mover-se atrav√©s de plataformas dispostas pelo mundo,
+    coletando bens e um trof√©u. Ap√≥s coletar o trof√©u, o jogador poder√° mover-se at√© a porta,
+    que o levar√° para a pr√≥xima fase do jogo.
 */
 
 #include <stdio.h>
@@ -18,7 +18,7 @@
 #include <conio2.h>
 
 //definicao de constantes
-//tamanho m·ximo da matriz que vai guardar o mapa
+//tamanho m√°ximo da matriz que vai guardar o mapa
 #define LINHAS 17
 #define COLUNAS 100
 
@@ -30,6 +30,7 @@ void imprime (int mat[][COLUNAS]);
 void desenha_barrainfo(int mat[][COLUNAS]);
 void define_cores(char c);
 void verifica_tecla();
+void imprime_menu(char menu[]);
 
 //definir prototipo da funcao exibe_menu();
 
@@ -37,7 +38,7 @@ int main(void)
 {
     //matriz do mapa
     int M[LINHAS][COLUNAS];
-    //matriz da barra de informaÁıes
+    //matriz da barra de informa√ß√µes
     int B[2][100];
 
     //contadores uteis para percorrer as matrizes
@@ -47,17 +48,17 @@ int main(void)
     char mapa[] = "mapa1.txt";
     char info[] = "info.txt";
 
-    //PRIMEIRA COISA QUE ACONTECE NO PROGRAMA … EXIBIR O MENU
+    //PRIMEIRA COISA QUE ACONTECE NO PROGRAMA √â EXIBIR O MENU
     //exibe_menu();
     //vai ser algo do tipo
     //faz um switch com as opcoes do menu
     //enquanto ele nao escrever nenhuma opcao valida, continua mostrando o menu...
     //1 - Novo Jogo
     //2 - Carregar um jogo salvo
-    //3 - Ranking de Melhores PontuaÁıes
+    //3 - Ranking de Melhores Pontua√ß√µes
     //4 - Sair
 
-    //printf("Lendo a barra de informaÁıes...\n");
+    //printf("Lendo a barra de informa√ß√µes...\n");
     le (B, info);
     //printf("\n\nAqui esta a barra de informacoes: \n");
     //imprime (B);
@@ -86,7 +87,7 @@ int main(void)
 //dada uma matriz de ponteiros e
 //dada uma string com o nome do arquivo txt
 //salva o arquivo na matriz
-//LuÌsa
+//Lu√≠sa
 void le (int mat[][COLUNAS], char arq[]) {
     FILE *fp;
     int i, j, n=0;
@@ -95,7 +96,7 @@ void le (int mat[][COLUNAS], char arq[]) {
     //abre o arquivo
     fp = fopen(arq,"r");
 
-    //se arquivo estiver vazio, deu erro, finaliza execuÁ„o
+    //se arquivo estiver vazio, deu erro, finaliza execu√ß√£o
     if(fp == NULL) {
         perror("Erro na leitura do arquivo.");
         return(-1);
@@ -116,7 +117,7 @@ void le (int mat[][COLUNAS], char arq[]) {
 //funcao imprime(matriz)
 //recebe como parametro a matriz
 //imprime na tela a matriz que contem o conteudo do arquivo txt
-//LuÌsa
+//Lu√≠sa
 void imprime (int mat[][COLUNAS]) {
     int i, j;
     for (i = 0; i < LINHAS; i++){
@@ -130,12 +131,12 @@ void imprime (int mat[][COLUNAS]) {
 //funcao desenha_barrainfo(matriz)
 //recebe a matriz que contem os dados da barra de informacoes
 //imprime os dados com formatacao
-//LuÌsa
+//Lu√≠sa
 void desenha_barrainfo(int mat[][COLUNAS]){
     int i,j;
     for (i = 0; i < 1; i++){
         for (j = 0; j < 100; j++) {
-            //ao inves de quebrar a linha com \n, da um espaÁamento entre as linhas de tamanho \t
+            //ao inves de quebrar a linha com \n, da um espa√ßamento entre as linhas de tamanho \t
             if(mat[i][j] == '\n'){
                 printf("\t");
             }
@@ -148,9 +149,9 @@ void desenha_barrainfo(int mat[][COLUNAS]){
 
 //funcao define_cores(caractere);
 //dado um caractere, pinta o fundo da tela de acordo com o mesmo
-//LuÌsa
+//Lu√≠sa
 void define_cores(char c){
-//verifica qual tipo de caractere È, para mudar a cor do fundo naquele caractere.
+//verifica qual tipo de caractere √©, para mudar a cor do fundo naquele caractere.
         switch(c){
             //parede
             case 'x':
@@ -211,8 +212,8 @@ void define_cores(char c){
 
 //funcao verifica_tecla()
 //verifica quais teclas estao sendo pressionadas e printa o nome da tecla clicada.
-//para a execuÁao do while quando for apertado o ESC
-//LuÌsa
+//para a execu√ßao do while quando for apertado o ESC
+//Lu√≠sa
 void verifica_tecla(){
     int ch;
     //enquanto o usuario nao apertar ESC, continua...
@@ -220,7 +221,7 @@ void verifica_tecla(){
     {
         //se apertar as setas
         if (ch == 0 || ch == 224){
-            //verifica qual seta È
+            //verifica qual seta √©
             switch(_getch ())
             {
                 case 75:
@@ -234,16 +235,48 @@ void verifica_tecla(){
                     break;
             }
         }
-        //verifica se È a barra de espaÁo
+        //verifica se √© a barra de espa√ßo
         else if(ch == 32){
                printf("\nBarraEspaco");
             }
-        //informa o n˙mero da tecla clicada
+        //informa o n√∫mero da tecla clicada
         //printf("%d\n", ch );
     }
-    //mostra que o usu·rio apertou o ESC
+    //mostra que o usu√°rio apertou o ESC
     printf("\nESC. Saindo... \n", ch);
 }
 
 //funcao exibe_menu();
 //Arthur
+void imprime_menu()
+    {
+        printf("1.Novo Jogo\n2.Carregar Jogo Salvo\n3.Melhores pontuacoes\n4.Sair\n");
+        printf("Escolha uma opcao:\n");
+        do
+    {
+    scanf ("%d", &t);
+    switch (t)
+    {
+        case 1://inicia um novo jogo
+        printf("Iniciando...\n");
+        break;
+
+        case 2://carrega um jogo salvo
+        printf("Carregando...\n");
+        break;
+
+        case 3://mostra o ranking das melhores pontuacoes
+        printf("Ranking...\n");
+        break;
+
+        case 4://encerra o jogo
+        printf("Encerrando...\n");
+        break;
+
+        default://opcao inv√°lida
+        printf("Opcao Invalida, digite novamente\n");
+        break;
+
+    }
+    }while (t != 4);
+    }
