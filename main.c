@@ -30,7 +30,7 @@ void imprime (int mat[][COLUNAS]);
 void desenha_barrainfo(int mat[][COLUNAS]);
 void define_cores(char c);
 void verifica_tecla();
-void imprime_menu(char menu[]);
+void imprime_menu();
 
 //definir prototipo da funcao exibe_menu();
 
@@ -48,6 +48,7 @@ int main(void)
     char mapa[] = "mapa1.txt";
     char info[] = "info.txt";
 
+    imprime_menu();
     //PRIMEIRA COISA QUE ACONTECE NO PROGRAMA É EXIBIR O MENU
     //exibe_menu();
     //vai ser algo do tipo
@@ -59,18 +60,20 @@ int main(void)
     //4 - Sair
 
     //printf("Lendo a barra de informações...\n");
-    le (B, info);
+    //le (B, info);
     //printf("\n\nAqui esta a barra de informacoes: \n");
     //imprime (B);
-    desenha_barrainfo(B);
+   // desenha_barrainfo(B);
 
     //printf("Lendo o mapa...\n");
-    le (M, mapa);
+    //le (M, mapa);
     //printf("\n\nAqui esta o seu arquivo: \n");
-    printf("\n");
-    imprime (M);
+   // printf("\n");
+    //imprime (M);
 
     verifica_tecla();
+
+
 
     /*int ch;
     while ((ch = _getch()) != 27)
@@ -248,35 +251,59 @@ void verifica_tecla(){
 
 //funcao exibe_menu();
 //Arthur
-void imprime_menu()
-    {
+void imprime_menu() {
+        int t;
         printf("1.Novo Jogo\n2.Carregar Jogo Salvo\n3.Melhores pontuacoes\n4.Sair\n");
         printf("Escolha uma opcao:\n");
-        do
+    do
     {
-    scanf ("%d", &t);
-    switch (t)
-    {
-        case 1://inicia um novo jogo
-        printf("Iniciando...\n");
-        break;
+        scanf ("%d", &t);
+        switch (t)
+        {
+            case 1://inicia um novo jogo
+            printf("Iniciando...\n");
+            novo_jogo();
 
-        case 2://carrega um jogo salvo
-        printf("Carregando...\n");
-        break;
+            break;
 
-        case 3://mostra o ranking das melhores pontuacoes
-        printf("Ranking...\n");
-        break;
+            case 2://carrega um jogo salvo
+            printf("Carregando...\n");
+            break;
 
-        case 4://encerra o jogo
-        printf("Encerrando...\n");
-        break;
+            case 3://mostra o ranking das melhores pontuacoes
+            printf("Ranking...\n");
+            break;
 
-        default://opcao inválida
-        printf("Opcao Invalida, digite novamente\n");
-        break;
+            case 4://encerra o jogo
+            printf("Encerrando...\n");
+            break;
 
+            default://opcao inválida
+            printf("Opcao Invalida, digite novamente\n");
+            break;
+
+        }
+    } while (t != 4);
     }
-    }while (t != 4);
+
+void novo_jogo(){
+    //texto que contem o arquivo mapa txt que vai ser guardado na matriz
+    char mapa[] = "menu.txt";
+    char info[] = "info.txt";
+    //matriz do mapa
+    int M[LINHAS][COLUNAS];
+    //matriz da barra de informações
+    int B[2][100];
+
+    //printf("Lendo a barra de informações...\n");
+    le (B, info);
+    //printf("\n\nAqui esta a barra de informacoes: \n");
+    //imprime (B);
+    desenha_barrainfo(B);
+
+    //printf("Lendo o mapa...\n");
+    le (M, mapa);
+    //printf("\n\nAqui esta o seu arquivo: \n");
+    printf("\n");
+    imprime (M);
     }
