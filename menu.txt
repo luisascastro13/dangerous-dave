@@ -1,0 +1,15 @@
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+x x											     x x
+xxx 											     xxx
+x			  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx			       x
+x		   	  x					   x    	 	       x
+x			  x		Novo jogo		   x		               x 
+x			  x	    Carregar um jogo salvo	   x		               x	
+x			  x     Ranking de Melhores Pontuacoes	   x		               x
+x			  x		  Sair			   x			       x
+x			  x					   x			       x
+x			  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx			       x
+x											       x
+xxx											     xxx
+x x											     x x   							     	
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
