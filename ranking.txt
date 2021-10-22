@@ -1,0 +1,15 @@
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+x x											     x x
+xxx 											     xxx
+x			  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx			       x
+x		   	  x					   x    	 	       x
+x			  x	   1 ->	 ??????????   xxxxx	   x		               x 
+x			  x	   2 ->	 ??????????   xxxxx	   x		               x	
+x			  x        3 ->  ??????????   xxxxx	   x		               x
+x			  x    	   4 ->	 ??????????   xxxxx        x			       x
+x			  x	   5 ->	 ??????????   xxxxx	   x			       x
+x			  x			                   x			       x
+x			  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx			       x
+xxx											     xxx
+x x											     x x   							     	
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 
