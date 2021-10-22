@@ -1,12 +1,9 @@
 /*
     UNIVERSIDADE FEDERAL DO RIO GRANDE DO SUL
     INF01202 - ALGORITMOS E PROGRAMAÇÃO
-
     TRABALHO FINAL
-
     ALUNOS: ARTHUR LOPES SAUER E LUÍSA SCHMITZ DE CASTRO
     MATRÍCULAS: 00333033 E 333766
-
     Jogo de plataforma inspirado no clássico Dangerous Dave.
     O objetivo do jogo é mover-se através de plataformas dispostas pelo mundo,
     coletando bens e um troféu. Após coletar o troféu, o jogador poderá mover-se até a porta,
@@ -31,6 +28,7 @@ void desenha_barrainfo(int mat[][COLUNAS]);
 void define_cores(char c);
 void verifica_tecla();
 void imprime_menu();
+void imprime_ranking();
 
 //definir prototipo da funcao exibe_menu();
 
@@ -253,8 +251,8 @@ void verifica_tecla(){
 //Arthur
 void imprime_menu() {
         int t;
-        printf("1.Novo Jogo\n2.Carregar Jogo Salvo\n3.Melhores pontuacoes\n4.Sair\n");
-        printf("Escolha uma opcao:\n");
+      printf("1.Novo Jogo\n2.Carregar Jogo Salvo\n3.Melhores pontuacoes\n4.Sair\n");
+      printf("Escolha uma opcao:\n");
     do
     {
         scanf ("%d", &t);
@@ -272,6 +270,7 @@ void imprime_menu() {
 
             case 3://mostra o ranking das melhores pontuacoes
             printf("Ranking...\n");
+            imprime_ranking();
             break;
 
             case 4://encerra o jogo
@@ -288,9 +287,31 @@ void imprime_menu() {
 
 void novo_jogo(){
     //texto que contem o arquivo mapa txt que vai ser guardado na matriz
-    char mapa[] = "menu.txt";
+    char mapa[] = "mapa1.txt";
     char info[] = "info.txt";
     //matriz do mapa
+    int M[LINHAS][COLUNAS];
+    //matriz da barra de informações
+    int B[2][100];
+
+    //printf("Lendo a barra de informações...\n");
+    le (B, info);
+    //printf("\n\nAqui esta a barra de informacoes: \n");
+    //imprime (B);
+    desenha_barrainfo(B);
+
+    //printf("Lendo o mapa...\n");
+    le (M, mapa);
+    //printf("\n\nAqui esta o seu arquivo: \n");
+    printf("\n");
+    imprime (M);
+    }
+
+void imprime_ranking(){
+//texto que contem o arquivo ranking txt que vai ser guardado na matriz
+    char mapa[] = "ranking.txt";
+    char info[] = "info.txt";
+    //matriz do ranking
     int M[LINHAS][COLUNAS];
     //matriz da barra de informações
     int B[2][100];
