@@ -30,7 +30,9 @@ void verifica_tecla();
 void imprime_menu();
 void imprime_ranking();
 
+
 //definir prototipo da funcao exibe_menu();
+
 
 int main(void)
 {
@@ -250,7 +252,8 @@ void verifica_tecla(){
 //funcao exibe_menu();
 //Arthur
 void imprime_menu() {
-        int t;
+    int t;
+    clrscr();
       printf("1.Novo Jogo\n2.Carregar Jogo Salvo\n3.Melhores pontuacoes\n4.Sair\n");
       printf("Escolha uma opcao:\n");
     do
@@ -274,7 +277,7 @@ void imprime_menu() {
             break;
 
             case 4://encerra o jogo
-            printf("Encerrando...\n");
+            printf("Encerrando... Pressione ESC\n");
             break;
 
             default://opcao inválida
@@ -294,6 +297,7 @@ void novo_jogo(){
     //matriz da barra de informações
     int B[2][100];
 
+    clrscr();
     //printf("Lendo a barra de informações...\n");
     le (B, info);
     //printf("\n\nAqui esta a barra de informacoes: \n");
@@ -315,6 +319,7 @@ void imprime_ranking(){
     int M[LINHAS][COLUNAS];
     //matriz da barra de informações
     int B[2][100];
+    clrscr();
 
     //printf("Lendo a barra de informações...\n");
     le (B, info);
@@ -327,4 +332,4 @@ void imprime_ranking(){
     //printf("\n\nAqui esta o seu arquivo: \n");
     printf("\n");
     imprime (M);
-    }
+}
