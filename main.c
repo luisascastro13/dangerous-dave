@@ -16,74 +16,70 @@
 
 //definicao de constantes
 //tamanho máximo da matriz que vai guardar o mapa
-#define LINHAS 17
-#define COLUNAS 100
+#define LINHAS 16
+#define COLUNAS 97
 
 //prototipos das funcoes utilizadas
 void desenha_mapa(char mapa[]);
-void verifica_tecla();
+
+//void verifica_tecla();
 void le(int mat[][COLUNAS], char arq[]);
-void imprime (int mat[][COLUNAS]);
+void imprime (int mat[][COLUNAS], int *posX, int *posY);
 void desenha_barrainfo(int mat[][COLUNAS]);
 void define_cores(char c);
-void verifica_tecla();
+//void verifica_tecla();
 void imprime_menu();
 void imprime_ranking();
-
-
-//definir prototipo da funcao exibe_menu();
-
+int novo_jogo(void);
 
 int main(void)
 {
-    //matriz do mapa
-    int M[LINHAS][COLUNAS];
-    //matriz da barra de informações
-    int B[2][100];
-
-    //contadores uteis para percorrer as matrizes
-    int i,j,n;
-
-    //texto que contem o arquivo mapa txt que vai ser guardado na matriz
-    char mapa[] = "mapa1.txt";
-    char info[] = "info.txt";
-
     imprime_menu();
-    //PRIMEIRA COISA QUE ACONTECE NO PROGRAMA É EXIBIR O MENU
-    //exibe_menu();
-    //vai ser algo do tipo
-    //faz um switch com as opcoes do menu
-    //enquanto ele nao escrever nenhuma opcao valida, continua mostrando o menu...
-    //1 - Novo Jogo
-    //2 - Carregar um jogo salvo
-    //3 - Ranking de Melhores Pontuações
-    //4 - Sair
-
-    //printf("Lendo a barra de informações...\n");
-    //le (B, info);
-    //printf("\n\nAqui esta a barra de informacoes: \n");
-    //imprime (B);
-   // desenha_barrainfo(B);
-
-    //printf("Lendo o mapa...\n");
-    //le (M, mapa);
-    //printf("\n\nAqui esta o seu arquivo: \n");
-   // printf("\n");
-    //imprime (M);
-
-    verifica_tecla();
-
-
-
-    /*int ch;
-    while ((ch = _getch()) != 27)
-    {
-        printf("%c\n", verifica_tecla(ch));
-    }
-    */
 
     getch();
-    return(0);
+    return 0;
+}
+
+//funcao exibe_menu();
+//Arthur
+void imprime_menu() {
+    int t;
+    clrscr();
+    do
+    {
+        printf("1.Novo Jogo\n2.Carregar Jogo Salvo\n3.Melhores pontuacoes\n4.Sair\n");
+        printf("Escolha uma opcao:\n");
+        scanf ("%d", &t);
+        switch (t)
+        {
+            case 1://inicia um novo jogo
+            //printf("Iniciando...\n");
+            //se retornou algo diferente de 0, é porque acabou de uma forma diferente
+            clrscr();
+            novo_jogo();
+            clrscr();
+
+            break;
+
+            case 2://carrega um jogo salvo
+            printf("Carregando...\n");
+            break;
+
+            case 3://mostra o ranking das melhores pontuacoes
+            printf("Ranking...\n");
+            imprime_ranking();
+            break;
+
+            case 4://encerra o jogo
+            printf("Encerrando... Pressione ESC\n");
+            break;
+
+            default://opcao inválida
+            printf("Opcao Invalida, digite novamente\n");
+            break;
+
+        }
+    } while (t != 4);
 }
 
 //funcao le(matriz, arquivo)
@@ -102,7 +98,7 @@ void le (int mat[][COLUNAS], char arq[]) {
     //se arquivo estiver vazio, deu erro, finaliza execução
     if(fp == NULL) {
         perror("Erro na leitura do arquivo.");
-        return(-1);
+        return -1;
     }
 
     //le o txt e salva em uma matriz de ponteiros
@@ -120,13 +116,18 @@ void le (int mat[][COLUNAS], char arq[]) {
 //funcao imprime(matriz)
 //recebe como parametro a matriz
 //imprime na tela a matriz que contem o conteudo do arquivo txt
+//altera a posicao (posx posy) do dave
 //Luísa
-void imprime (int mat[][COLUNAS]) {
+void imprime (int mat[][COLUNAS], int *posX, int *posY) {
     int i, j;
     for (i = 0; i < LINHAS; i++){
         for (j = 0; j < COLUNAS; j++) {
             define_cores(mat[i][j]);
             printf("%c", mat[i][j]);
+            if(mat[i][j] == 'D'){
+                *posX = i;
+                *posY = j;
+            }
         }
     }
 }
@@ -213,123 +214,311 @@ void define_cores(char c){
         }
 }
 
-//funcao verifica_tecla()
-//verifica quais teclas estao sendo pressionadas e printa o nome da tecla clicada.
-//para a execuçao do while quando for apertado o ESC
 //Luísa
-void verifica_tecla(){
-    int ch;
-    //enquanto o usuario nao apertar ESC, continua...
-    while ((ch = _getch()) != 27)
-    {
-        //se apertar as setas
-        if (ch == 0 || ch == 224){
-            //verifica qual seta é
-            switch(_getch ())
-            {
+//inspiracao para a criacao da funcao:
+//stackoverflow.com/a/49408013
+int retorna_tecla(void) {
+    int key, movimento;
+    if (kbhit()) {
+        key=getch();
+        if (key == 224) {
+            do {
+                key=getch();
+            } while(key==224);
+
+            switch (key) {
+                case 72:
+                    movimento = 2;
+                    //printf("up");
+                    break;
                 case 75:
-                    printf("\nEsquerda");
+                    movimento = 1;
+                    //printf("left");
                     break;
                 case 77:
-                     printf("\nDireita");
+                    movimento = 3;
+                    //printf("right");
                     break;
-                case 72:
-                     printf("\nCima");
+                case 80:
+                    movimento = 4;
+                    //printf("down");
                     break;
             }
         }
-        //verifica se é a barra de espaço
-        else if(ch == 32){
-               printf("\nBarraEspaco");
-            }
-        //informa o número da tecla clicada
-        //printf("%d\n", ch );
+        //esc
+        else if(key == 27){
+            movimento = 27;
+        }
+        //n ou N
+        else if(key == 78 || key == 110){
+            movimento = 0;
+        }
+        //todos outros caracteres
+        else{
+            movimento = -1;
+        }
+        return movimento;
     }
-    //mostra que o usuário apertou o ESC
-    printf("\nESC. Saindo... \n", ch);
 }
 
-//funcao exibe_menu();
-//Arthur
-void imprime_menu() {
-    int t;
-    clrscr();
-      printf("1.Novo Jogo\n2.Carregar Jogo Salvo\n3.Melhores pontuacoes\n4.Sair\n");
-      printf("Escolha uma opcao:\n");
-    do
-    {
-        scanf ("%d", &t);
-        switch (t)
-        {
-            case 1://inicia um novo jogo
-            printf("Iniciando...\n");
-            novo_jogo();
-
-            break;
-
-            case 2://carrega um jogo salvo
-            printf("Carregando...\n");
-            break;
-
-            case 3://mostra o ranking das melhores pontuacoes
-            printf("Ranking...\n");
-            imprime_ranking();
-            break;
-
-            case 4://encerra o jogo
-            printf("Encerrando... Pressione ESC\n");
-            break;
-
-            default://opcao inválida
-            printf("Opcao Invalida, digite novamente\n");
-            break;
-
-        }
-    } while (t != 4);
-    }
-
-void novo_jogo(){
+//Luísa
+//abre o jogo e movimenta o boneco no mapa.
+int novo_jogo(){
     //texto que contem o arquivo mapa txt que vai ser guardado na matriz
     char mapa[] = "mapa1.txt";
     char info[] = "info.txt";
+    int tecla;
+
     //matriz do mapa
     int M[LINHAS][COLUNAS];
     //matriz da barra de informações
     int B[2][100];
+    int posX, posY;
+    int *dx = &posX;
+    int *dy = &posY;
+    char proximo;
+    int pontos=0;
 
-    clrscr();
-    //printf("Lendo a barra de informações...\n");
     le (B, info);
-    //printf("\n\nAqui esta a barra de informacoes: \n");
-    //imprime (B);
-    desenha_barrainfo(B);
-
-    //printf("Lendo o mapa...\n");
     le (M, mapa);
-    //printf("\n\nAqui esta o seu arquivo: \n");
+
+    desenha_barrainfo(B);
     printf("\n");
-    imprime (M);
+    imprime(M, dx, dy);
+
+    while (1) {
+        if (kbhit()) {
+            tecla = retorna_tecla();
+            //printf("%d", tecla);
+
+            switch(tecla){
+                //esc
+                case 27:
+                    return 0;
+                    break;
+
+                //esquerda
+                case 1:
+                    proximo = M[posX][posY - 1];
+                    switch(proximo){
+                        //casos em que morre;
+                        case 'A':
+                        case 'F':
+                            return -1;
+                            //morre
+                            break;
+
+                        //parede
+                        case 'x':
+                        case 'o':
+                            break;
+
+                        //vazio
+                        case ' ':
+                        case 'J':
+                        case 'T':
+                        case 'P':
+                            M[posX][posY] = ' ';
+                            posY -= 1;
+                            M[posX][posY] = 'D';
+                            break;
+
+                        //SOMA PONTOS E ANDA
+                        //coroa
+                        case '%':
+                            pontos+=100;
+                        //anel
+                        case '$':
+                            pontos+=50;
+                        //rubi
+                        case '#':
+                            pontos+=50;
+                        //safira
+                        case '@':
+                            pontos+=50;
+                        //ametista
+                        case '!':
+                            pontos += 50;
+                            M[posX][posY] = ' ';
+                            posY -= 1;
+                            M[posX][posY] = 'D';
+                            break;
+                    }
+                    break;
+
+                //cima
+                case 2:
+                    proximo = M[posX-1][posY];
+                    switch(proximo){
+                        //casos em que morre;
+                        case 'A':
+                        case 'F':
+                            return -1;
+                            //morre
+                            break;
+
+                        //parede
+                        case 'x':
+                        case '_':
+                        case 'o':
+                            break;
+
+                        //vazio
+                        case ' ':
+                        case 'J':
+                        case 'T':
+                        case 'P':
+                            M[posX][posY] = ' ';
+                            posX -= 1;
+                            M[posX][posY] = 'D';
+                            break;
+
+                        //SOMA PONTOS E ANDA
+                        //coroa
+                        case '%':
+                            pontos+=100;
+                        //anel
+                        case '$':
+                            pontos+=50;
+                        //rubi
+                        case '#':
+                            pontos+=50;
+                        //safira
+                        case '@':
+                            pontos+=50;
+                        //ametista
+                        case '!':
+                            pontos += 50;
+                            M[posX][posY] = ' ';
+                            posX -= 1;
+                            M[posX][posY] = 'D';
+                            break;
+                    }
+                    break;
+
+                //direita
+                case 3:
+                    proximo = M[posX][posY + 1];
+                    switch(proximo){
+                        //casos em que morre;
+                        case 'A':
+                        case 'F':
+                            return -1;
+                            //morre
+                            break;
+
+                        //parede
+                        case 'x':
+                        case 'o':
+                            break;
+
+                        //vazio
+                        case ' ':
+                        case 'J':
+                        case 'T':
+                        case 'P':
+                            M[posX][posY] = ' ';
+                            posY += 1;
+                            M[posX][posY] = 'D';
+                            break;
+
+                        //SOMA PONTOS E ANDA
+                        //coroa
+                        case '%':
+                            pontos+=100;
+                        //anel
+                        case '$':
+                            pontos+=50;
+                        //rubi
+                        case '#':
+                            pontos+=50;
+                        //safira
+                        case '@':
+                            pontos+=50;
+                        //ametista
+                        case '!':
+                            pontos += 50;
+                            M[posX][posY] = ' ';
+                            posY += 1;
+                            M[posX][posY] = 'D';
+                            break;
+                    }
+                    break;
+
+                //baixo
+                case 4:
+                    proximo = M[posX+1][posY];
+                    switch(proximo){
+                        //casos em que morre;
+                        case 'A':
+                        case 'F':
+                            return -1;
+                            //morre
+                            break;
+
+                        //parede
+                        case 'x':
+                        case '_':
+                        case 'o':
+                            break;
+
+                        //vazio
+                        case ' ':
+                        case 'J':
+                        case 'T':
+                        case 'P':
+                            M[posX][posY] = ' ';
+                            posX += 1;
+                            M[posX][posY] = 'D';
+                            break;
+
+                        //SOMA PONTOS E ANDA
+                        //coroa
+                        case '%':
+                            pontos+=100;
+                        //anel
+                        case '$':
+                            pontos+=50;
+                        //rubi
+                        case '#':
+                            pontos+=50;
+                        //safira
+                        case '@':
+                            pontos+=50;
+                        //ametista
+                        case '!':
+                            pontos += 50;
+                            M[posX][posY] = ' ';
+                            posX += 1;
+                            M[posX][posY] = 'D';
+                            break;
+                    }
+                    break;
+
+                case -1:
+                    printf("%d", pontos);
+                    break;
+            }
+            //desenha_barrainfo(B);
+            //printf("\n");
+            imprime(M, dx, dy);
+        }
     }
+    printf("%d", pontos);
+}
 
 void imprime_ranking(){
 //texto que contem o arquivo ranking txt que vai ser guardado na matriz
     char mapa[] = "ranking.txt";
-    char info[] = "info.txt";
     //matriz do ranking
     int M[LINHAS][COLUNAS];
     //matriz da barra de informações
     int B[2][100];
     clrscr();
 
-    //printf("Lendo a barra de informações...\n");
-    le (B, info);
-    //printf("\n\nAqui esta a barra de informacoes: \n");
-    //imprime (B);
-    desenha_barrainfo(B);
-
     //printf("Lendo o mapa...\n");
     le (M, mapa);
     //printf("\n\nAqui esta o seu arquivo: \n");
     printf("\n");
-    imprime (M);
+    imprime (M, 0,0);
 }
