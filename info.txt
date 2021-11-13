@@ -1,5 +1,5 @@
-SCORE: 00000
-LEVEL: 1
-DAVES: @@@@@
-JETPACK? S
-TROFEU? N
+150
+1
+5
+T
+F

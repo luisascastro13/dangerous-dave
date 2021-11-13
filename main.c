@@ -1,23 +1,38 @@
 /*
     UNIVERSIDADE FEDERAL DO RIO GRANDE DO SUL
-    INF01202 - ALGORITMOS E PROGRAMA√á√ÉO
+    INF01202 - ALGORITMOS E PROGRAMA«√O
     TRABALHO FINAL
-    ALUNOS: ARTHUR LOPES SAUER E LU√çSA SCHMITZ DE CASTRO
-    MATR√çCULAS: 00333033 E 333766
-    Jogo de plataforma inspirado no cl√°ssico Dangerous Dave.
-    O objetivo do jogo √© mover-se atrav√©s de plataformas dispostas pelo mundo,
-    coletando bens e um trof√©u. Ap√≥s coletar o trof√©u, o jogador poder√° mover-se at√© a porta,
-    que o levar√° para a pr√≥xima fase do jogo.
+    ALUNOS: ARTHUR LOPES SAUER E LUÕSA SCHMITZ DE CASTRO
+    MATRÕCULAS: 00333033 E 333766
+    Jogo de plataforma inspirado no cl·ssico Dangerous Dave.
+    O objetivo do jogo È mover-se atravÈs de plataformas dispostas pelo mundo,
+    coletando bens e um trofÈu. ApÛs coletar o trofÈu, o jogador poder· mover-se atÈ a porta,
+    que o levar· para a prÛxima fase do jogo.
 */
 
 #include <stdio.h>
 #include <conio.h>
 #include <conio2.h>
 
+
 //definicao de constantes
-//tamanho m√°ximo da matriz que vai guardar o mapa
+//tamanho m·ximo da matriz que vai guardar o mapa
 #define LINHAS 16
 #define COLUNAS 97
+
+#define MAPA1 "mapa1.txt"
+#define MAPA2 "mapa2.txt"
+#define MAPA3 "mapa3.txt"
+
+typedef struct Estado_Atual
+{
+    char mapa[LINHAS][COLUNAS];      //matriz do mapa
+    int pontuacao;                   //pontuacao do jogador
+    char bens[20];                   //itens
+    char nome[40];                   //nome do jogador
+    int vidas;                       //quantida de vidas
+    int nivel;                      //nivel que o jogador parou
+} Estado_Atual;
 
 //prototipos das funcoes utilizadas
 void desenha_mapa(char mapa[]);
@@ -30,7 +45,7 @@ void define_cores(char c);
 //void verifica_tecla();
 void imprime_menu();
 void imprime_ranking();
-int novo_jogo(void);
+int novo_jogo(char mapa[], int m);
 
 int main(void)
 {
@@ -43,7 +58,7 @@ int main(void)
 //funcao exibe_menu();
 //Arthur
 void imprime_menu() {
-    int t;
+    int t, mapa;
     clrscr();
     do
     {
@@ -54,11 +69,19 @@ void imprime_menu() {
         {
             case 1://inicia um novo jogo
             //printf("Iniciando...\n");
-            //se retornou algo diferente de 0, √© porque acabou de uma forma diferente
-            clrscr();
-            novo_jogo();
-            clrscr();
-
+            //se retornou algo diferente de 0, È porque acabou de uma forma diferente
+                clrscr();
+                mapa= novo_jogo(MAPA1, 1);
+                if(mapa == 2){
+                    novo_jogo(MAPA2, 2);
+                }
+                else if(mapa == 3){
+                    novo_jogo (MAPA3, 3);
+                }
+                else if(mapa == -1){
+                    clrscr();
+                    printf("VocÍ morreu.");
+                }
             break;
 
             case 2://carrega um jogo salvo
@@ -74,7 +97,7 @@ void imprime_menu() {
             printf("Encerrando... Pressione ESC\n");
             break;
 
-            default://opcao inv√°lida
+            default://opcao inv·lida
             printf("Opcao Invalida, digite novamente\n");
             break;
 
@@ -86,7 +109,7 @@ void imprime_menu() {
 //dada uma matriz de ponteiros e
 //dada uma string com o nome do arquivo txt
 //salva o arquivo na matriz
-//Lu√≠sa
+//LuÌsa
 void le (int mat[][COLUNAS], char arq[]) {
     FILE *fp;
     int i, j, n=0;
@@ -95,7 +118,7 @@ void le (int mat[][COLUNAS], char arq[]) {
     //abre o arquivo
     fp = fopen(arq,"r");
 
-    //se arquivo estiver vazio, deu erro, finaliza execu√ß√£o
+    //se arquivo estiver vazio, deu erro, finaliza execuÁ„o
     if(fp == NULL) {
         perror("Erro na leitura do arquivo.");
         return -1;
@@ -117,7 +140,7 @@ void le (int mat[][COLUNAS], char arq[]) {
 //recebe como parametro a matriz
 //imprime na tela a matriz que contem o conteudo do arquivo txt
 //altera a posicao (posx posy) do dave
-//Lu√≠sa
+//LuÌsa
 void imprime (int mat[][COLUNAS], int *posX, int *posY) {
     int i, j;
     for (i = 0; i < LINHAS; i++){
@@ -135,12 +158,12 @@ void imprime (int mat[][COLUNAS], int *posX, int *posY) {
 //funcao desenha_barrainfo(matriz)
 //recebe a matriz que contem os dados da barra de informacoes
 //imprime os dados com formatacao
-//Lu√≠sa
+//LuÌsa
 void desenha_barrainfo(int mat[][COLUNAS]){
     int i,j;
     for (i = 0; i < 1; i++){
         for (j = 0; j < 100; j++) {
-            //ao inves de quebrar a linha com \n, da um espa√ßamento entre as linhas de tamanho \t
+            //ao inves de quebrar a linha com \n, da um espaÁamento entre as linhas de tamanho \t
             if(mat[i][j] == '\n'){
                 printf("\t");
             }
@@ -153,9 +176,9 @@ void desenha_barrainfo(int mat[][COLUNAS]){
 
 //funcao define_cores(caractere);
 //dado um caractere, pinta o fundo da tela de acordo com o mesmo
-//Lu√≠sa
+//LuÌsa
 void define_cores(char c){
-//verifica qual tipo de caractere √©, para mudar a cor do fundo naquele caractere.
+//verifica qual tipo de caractere È, para mudar a cor do fundo naquele caractere.
         switch(c){
             //parede
             case 'x':
@@ -214,7 +237,7 @@ void define_cores(char c){
         }
 }
 
-//Lu√≠sa
+//LuÌsa
 //inspiracao para a criacao da funcao:
 //stackoverflow.com/a/49408013
 int retorna_tecla(void) {
@@ -261,23 +284,25 @@ int retorna_tecla(void) {
     }
 }
 
-//Lu√≠sa
+//LuÌsa
 //abre o jogo e movimenta o boneco no mapa.
-int novo_jogo(){
+int novo_jogo(char mapa[], int m){
     //texto que contem o arquivo mapa txt que vai ser guardado na matriz
-    char mapa[] = "mapa1.txt";
     char info[] = "info.txt";
     int tecla;
 
     //matriz do mapa
     int M[LINHAS][COLUNAS];
-    //matriz da barra de informa√ß√µes
+    //matriz da barra de informaÁıes
     int B[2][100];
     int posX, posY;
     int *dx = &posX;
     int *dy = &posY;
     char proximo;
     int pontos=0;
+    int vidas = 5;
+    char bens;
+    int mapinha = m;
 
     le (B, info);
     le (M, mapa);
@@ -290,6 +315,7 @@ int novo_jogo(){
         if (kbhit()) {
             tecla = retorna_tecla();
             //printf("%d", tecla);
+            clrscr();
 
             switch(tecla){
                 //esc
@@ -304,7 +330,15 @@ int novo_jogo(){
                         //casos em que morre;
                         case 'A':
                         case 'F':
-                            return -1;
+                        case 'f':
+                            if(vidas > 0){
+                                vidas --;
+                                pontos = 0;
+                                le (M, mapinha);
+                            }
+                            else{
+                                return -1;
+                            }
                             //morre
                             break;
 
@@ -317,11 +351,19 @@ int novo_jogo(){
                         case ' ':
                         case 'J':
                         case 'T':
-                        case 'P':
                             M[posX][posY] = ' ';
                             posY -= 1;
                             M[posX][posY] = 'D';
                             break;
+
+                        case 'P':
+                            if(m == 2){
+                                return 3;
+                            }
+                            else{
+                                return 2;
+                            }
+                           break;
 
                         //SOMA PONTOS E ANDA
                         //coroa
@@ -353,7 +395,15 @@ int novo_jogo(){
                         //casos em que morre;
                         case 'A':
                         case 'F':
-                            return -1;
+                        case 'f':
+                            if(vidas > 0){
+                                vidas --;
+                                pontos = 0;
+                                le (M, mapinha);
+                            }
+                            else{
+                                return -1;
+                            }
                             //morre
                             break;
 
@@ -367,11 +417,19 @@ int novo_jogo(){
                         case ' ':
                         case 'J':
                         case 'T':
-                        case 'P':
                             M[posX][posY] = ' ';
                             posX -= 1;
                             M[posX][posY] = 'D';
                             break;
+
+                        case 'P':
+                            if(m == 2){
+                                return 3;
+                            }
+                            else{
+                                return 2;
+                            }
+                           break;
 
                         //SOMA PONTOS E ANDA
                         //coroa
@@ -403,7 +461,15 @@ int novo_jogo(){
                         //casos em que morre;
                         case 'A':
                         case 'F':
-                            return -1;
+                        case 'f':
+                            if(vidas > 0){
+                                vidas --;
+                                pontos = 0;
+                                le (M, mapinha);
+                            }
+                            else{
+                                return -1;
+                            }
                             //morre
                             break;
 
@@ -416,11 +482,19 @@ int novo_jogo(){
                         case ' ':
                         case 'J':
                         case 'T':
-                        case 'P':
                             M[posX][posY] = ' ';
                             posY += 1;
                             M[posX][posY] = 'D';
                             break;
+
+                       case 'P':
+                            if(m == 2){
+                                return 3;
+                            }
+                            else{
+                                return 2;
+                            }
+                           break;
 
                         //SOMA PONTOS E ANDA
                         //coroa
@@ -452,7 +526,14 @@ int novo_jogo(){
                         //casos em que morre;
                         case 'A':
                         case 'F':
-                            return -1;
+                            if(vidas > 0){
+                                vidas --;
+                                pontos = 0;
+                                le (M, mapinha);
+                            }
+                            else{
+                                return -1;
+                            }
                             //morre
                             break;
 
@@ -466,11 +547,18 @@ int novo_jogo(){
                         case ' ':
                         case 'J':
                         case 'T':
-                        case 'P':
                             M[posX][posY] = ' ';
                             posX += 1;
                             M[posX][posY] = 'D';
                             break;
+                        case 'P':
+                            if(m == 2){
+                                return 3;
+                            }
+                            else{
+                                return 2;
+                            }
+                           break;
 
                         //SOMA PONTOS E ANDA
                         //coroa
@@ -496,15 +584,19 @@ int novo_jogo(){
                     break;
 
                 case -1:
-                    printf("%d", pontos);
+
                     break;
             }
             //desenha_barrainfo(B);
             //printf("\n");
+
+            printf("SCORE: %d", pontos);
+            printf("\tVIDAS: %d", vidas);
             imprime(M, dx, dy);
+
         }
     }
-    printf("%d", pontos);
+   // printf("%d", pontos);
 }
 
 void imprime_ranking(){
@@ -512,10 +604,9 @@ void imprime_ranking(){
     char mapa[] = "ranking.txt";
     //matriz do ranking
     int M[LINHAS][COLUNAS];
-    //matriz da barra de informa√ß√µes
+    //matriz da barra de informaÁıes
     int B[2][100];
     clrscr();
-
     //printf("Lendo o mapa...\n");
     le (M, mapa);
     //printf("\n\nAqui esta o seu arquivo: \n");
